@@ -1,4 +1,4 @@
-## SQL - Assignment 1
+ SQL - Assignment 1
 
 CREATE DATABASE IF NOT EXISTS Testing_System_Assignment_1;
 	CREATE TABLE IF NOT EXISTS Department (
