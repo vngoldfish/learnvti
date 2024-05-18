@@ -38,7 +38,7 @@ USE Testing_System_Assignment_3;
         CreateDate	DATE,
         CONSTRAINT g_pk PRIMARY KEY (GroupId),
         CONSTRAINT g_uq	UNIQUE (GroupName),
-        CONSTRAINT g_fk FOREIGN KEY (CreatorId)	 REFERENCES `Accounts`(AccountId)
+        CONSTRAINT g_fk FOREIGN KEY (CreatorId)	 REFERENCES `Accounts`(AccountId) ON DELETE CASCADE ON UPDATE CASCADE
     );
     DROP TABLE IF EXISTS GroupAccount;
     CREATE TABLE IF NOT EXISTS GroupAccount(
@@ -46,8 +46,8 @@ USE Testing_System_Assignment_3;
         AccountId INT,
         JointDate	DATE,
         CONSTRAINT ga_pk PRIMARY KEY (GroupId,AccountId),
-        CONSTRAINT ga_fk1 FOREIGN KEY (GroupId) REFERENCES `Group`(GroupId),
-        CONSTRAINT ga_fk2 FOREIGN KEY (AccountId) REFERENCES `Accounts`(AccountId)        
+        CONSTRAINT ga_fk1 FOREIGN KEY (GroupId) REFERENCES `Group`(GroupId) ON DELETE CASCADE ON UPDATE CASCADE   ,
+        CONSTRAINT ga_fk2 FOREIGN KEY (AccountId) REFERENCES `Accounts`(AccountId)  ON DELETE CASCADE ON UPDATE CASCADE      
     );
     DROP TABLE IF EXISTS TypeQuestion;
     CREATE TABLE IF NOT EXISTS TypeQuestion (
@@ -76,7 +76,7 @@ USE Testing_System_Assignment_3;
         CONSTRAINT q_uq	UNIQUE(Content),
         CONSTRAINT q_fk1	FOREIGN KEY (CategoryId) REFERENCES CategoryQuestion(CategoryId),
         CONSTRAINT q_fk2	FOREIGN KEY (TypeId) REFERENCES TypeQuestion(TypeId),
-        CONSTRAINT q_fk3	FOREIGN KEY (CreatorId) REFERENCES `Accounts`(AccountId)
+        CONSTRAINT q_fk3	FOREIGN KEY (CreatorId) REFERENCES `Accounts`(AccountId) ON DELETE CASCADE ON UPDATE CASCADE
     );
     DROP TABLE IF EXISTS Answer;
     CREATE TABLE IF NOT EXISTS Answer(
@@ -85,7 +85,7 @@ USE Testing_System_Assignment_3;
         QuestionId	TINYINT,
         isCorrect	CHAR(5),
         CONSTRAINT aw_pk PRIMARY KEY(AnswerId),
-        CONSTRAINT aw_fk	FOREIGN KEY (QuestionId) REFERENCES Question(QuestionId)
+        CONSTRAINT aw_fk	FOREIGN KEY (QuestionId) REFERENCES Question(QuestionId) ON DELETE CASCADE ON UPDATE CASCADE   
     );
     DROP TABLE IF EXISTS Exam;
     CREATE TABLE IF NOT EXISTS Exam(
@@ -99,7 +99,7 @@ USE Testing_System_Assignment_3;
         CONSTRAINT as_pk PRIMARY KEY(ExamId),
         CONSTRAINT as_uq	UNIQUE(`Code`,Title),
         CONSTRAINT as_fk1	FOREIGN KEY(CategoryId) REFERENCES CategoryQuestion(CategoryId),
-        CONSTRAINT as_fk2	FOREIGN KEY (CreatorId) REFERENCES `Accounts`(AccountId)
+        CONSTRAINT as_fk2	FOREIGN KEY (CreatorId) REFERENCES `Accounts`(AccountId) ON DELETE CASCADE ON UPDATE CASCADE
     );
     DROP TABLE IF EXISTS ExamQuestion;
     CREATE TABLE IF NOT EXISTS ExamQuestion(
@@ -326,12 +326,58 @@ USE Testing_System_Assignment_3;
     -- Question 11 (クエスチョン　１１) : D で始まり、oで終わる従業員の名前を取得します
     SELECT * FROM Accounts WHERE FullName LIKE 'D%o';
     -- Question 12 (クエスチョン　１２)　： 2019/12/20 より前に作成されたすべての試験を削除する
-    /*SELECT * FROM Accounts;
-    DELETE FROM Accounts WHERE CreateDate <= "2019-12-20";
-    SELECT AccountId FROM Accounts WHERE CreateDate <= "2019-12-20";
-    DELETE FROM Accounts WHERE  AccountId IN (SELECT AccountId FROM Accounts WHERE CreateDate <= "2019-12-20");
+	-- c1
+	-- DELETE FROM Accounts WHERE AccountId IN (SELECT AccountId FROM (SELECT * FROM Accounts) AS tempTable1 WHERE CreateDate >= "2019-12-20" );
+    -- c2
+    /* SET SQL_SAFE_UPDATES = 0;
+	DROP TEMPORARY TABLE IF EXISTS temp_ids;
+    CREATE TEMPORARY TABLE IF NOT EXISTS  temp_ids(AccountId	INT);
+    INSERT INTO temp_ids(AccountId)
+		SELECT AccountID
+		FROM Accounts
+		WHERE CreateDate >= "2019-12-20";
+	DELETE FROM Accounts WHERE AccountID IN (SELECT AccountId FROM temp_ids);
+    -- c3
+    
+    DELETE FROM Accounts WHERE AccountId IS NOT NULL AND CreateDate >= "2019-12-20";
     */
-    DELETE FROM Accounts WHERE AccountId IN (SELECT AccountId FROM (SELECT * FROM Accounts) AS tempTable1 WHERE CreateDate >= "2019-12-20" );
+    -- Question  13 (クエスチョン　１３)：内容が”Câu hỏi”で始まる問題をすべて削除する
+	
+    INSERT INTO Question (Content, CategoryId, TypeId, CreatorId, CreateDate) 
+	VALUES
+		('Câu hỏi demo ', 1, 1, 1, CURDATE());
+    /*    
+    DELETE FROM Question WHERE QuestionId IN (SELECT QuestionId FROM (SELECT QuestionId FROM Question WHERE Content LIKE "Câu hỏi %") AS Temp_q);
+    DELETE FROM Question WHERE QuestionId IS NOT NULL AND Content LIKE "Câu hỏi %";
+    
+    
+    DROP TEMPORARY TABLE IF EXISTS Temp_q;
+    CREATE TEMPORARY TABLE IF NOT EXISTS Temp_q(QuestionId TINYINT);
+    INSERT INTO Temp_q(QuestionId)
+		SELECT QuestionId FROM Question
+		WHERE	Content LIKE "Câu hỏi%";
+	SELECT * FROM Temp_q;
+    DELETE FROM Question WHERE QuestionId IN (SELECT QuestionId FROM Temp_q);
+    */
+    
+     -- Question 14 (クエスチョン　１４)　：   IDの５アカウントの情報を更新して、名前を「Nguyen Ba Loc」に、メールアドレスを「loc.nguyenba@vti.com.vn」にする
+     UPDATE Accounts 
+     SET 	FullName = "Nguyen Ba Loc",
+			Email	= "loc.nguyenba@vti.com.vn"
+	WHERE
+			AccountId = 5;
+	Select * From Accounts WHERE AccountId = 5;
+    
+    -- Question 14 (クエスチョン　１５)：IDの５アカウントの情報を更新してグルーブを「４」にする
+    UPDATE GroupAccount
+    SET GroupId = 4
+    WHERE AccountId = 5;
+    
+    
+		
+        
+    
+    
     
     
     
