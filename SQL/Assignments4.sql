@@ -59,7 +59,57 @@ SELECT q.Content,ac.FullName,cq.CategoryName,aw.Content FROM Question q
             JOIN Answer aw ON q.QuestionId = aw.QuestionId
             WHERE aw.isCorrect = "TRUE";
 -- Question13 : 各種類の質問の数を取得する
+-- Question 14 : アカウントがないグルーブを取得する
+SELECT  * FROM `Group` g  LEFT JOIN GroupAccount ga ON g.GroupId = ga.GroupId WHERE ga.GroupId IS NULL;
+-- Question 16 : Answerがない質問を取得します
+SELECT * FROM Question;
+SELECT * FROM Answer;
+SELECT * FROM Question q LEFT JOIN Answer aw ON q.QuestionId = aw.QuestionId WHERE aw.QuestionId IS NULL; 
 
+/*
+	UNION
+*/
+/*
+	Question 17 
+		a.グルーブ１に属するアカウントを取得する
+        b.グルーブ２に属するアカウントを取得する
+*/
+SELECT * FROM GroupAccount;
+SELECT a.UserName FROM Accounts a JOIN GroupAccount ga ON a.AccountID = ga.AccountId WHERE ga.GroupId = 1;
+SELECT a.UserName FROM Accounts a JOIN GroupAccount ga ON a.AccountID = ga.AccountId WHERE ga.GroupId = 2;
+SELECT a.UserName FROM Accounts a JOIN GroupAccount ga ON a.AccountID = ga.AccountId WHERE ga.GroupId = 1
+UNION
+SELECT a.UserName FROM Accounts a JOIN GroupAccount ga ON a.AccountID = ga.AccountId WHERE ga.GroupId = 2;
+/*
+	Question 18:
+    a.５人以上のメンバーがいるグルーブを取得します
+    b.７人未満のメンバーがいるグルーブを取得します
+*/
+INSERT INTO GroupAccount(GroupId,AccountId)
+VALUES
+	(1,2),
+    (1,3),
+    (1,4),
+    (1,5),
+    (1,6),
+    (1,7),
+    (1,8),
+    (1,9),
+    (1,10),
+    (2,3),
+    (2,4),
+    (2,5),
+    (3,6),
+    (3,7),
+    (3,8),
+    (3,9),
+    (3,1),
+    (3,10);
+SELECT * FROM GroupAccount;
+SELECT g.GroupName,COUNT(g.GroupId) FROM `Group` g JOIN GroupAccount ga ON g.GroupId = ga.GroupId GROUP BY g.GroupId;
+SELECT g.GroupName FROM `Group` g JOIN GroupAccount ga ON g.GroupId = ga.GroupId GROUP BY g.GroupId HAVING COUNT(g.GroupId) > 5
+UNION ALL
+SELECT g.GroupName FROM `Group` g JOIN GroupAccount ga ON g.GroupId = ga.GroupId GROUP BY g.GroupId HAVING COUNT(g.GroupId) < 7;
 
  
  
