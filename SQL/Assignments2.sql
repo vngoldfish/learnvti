@@ -85,7 +85,7 @@ USE Testing_System_Assignment_2;
         QuestionId	TINYINT,
         isCorrect	CHAR(5),
         CONSTRAINT aw_pk PRIMARY KEY(AnswerId),
-        CONSTRAINT aw_fk	FOREIGN KEY (QuestionId) REFERENCES Question(QuestionId)
+        CONSTRAINT aw_fk	FOREIGN KEY (QuestionId) REFERENCES Question(QuestionId) ON DELETE CASCADE
     );
     DROP TABLE IF EXISTS Exam;
     CREATE TABLE IF NOT EXISTS Exam(
@@ -105,7 +105,7 @@ USE Testing_System_Assignment_2;
     CREATE TABLE IF NOT EXISTS ExamQuestion(
 		ExamId TINYINT,
         QuestionId	TINYINT,
-        CONSTRAINT eq_pk PRIMARY KEY(ExamId,QuestionId)
+        CONSTRAINT eq_pk PRIMARY KEY(ExamId,QuestionId) 
     );
     
 		-- Thêm dữ liệu vào bảng Department
