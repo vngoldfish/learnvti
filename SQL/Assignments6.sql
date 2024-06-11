@@ -142,22 +142,35 @@ USE Testing_System_Assignment_3;
 	CREATE PROCEDURE DeleteOldExams()
 		BEGIN
 			DECLARE examIdToDelete TINYINT;
-            DECLARE deleteExxamQuestions INT DEFAULT 0;
+            DECLARE deletedExamQuestions INT DEFAULT 0;
+			DECLARE done INT DEFAULT 0;
 			DECLARE cur CURSOR FOR SELECT ExamId FROM Exam WHERE CreateDate >= DATE_FORMAT(DATE_SUB(CURDATE(),INTERVAL 3 YEAR),'%Y-%m-01');
-			OPEN cur;
+			CREATE TEMPORARY TABLE IF NOT EXISTS DeletedRecordsCount (
+				ExamId TINYINT,
+				DeletedExamQuestions INT
+			);
+            OPEN cur;
             read_loop:LOOP
 				FETCH cur INTO examIdToDelete;
-                IF NOT FOUND THEN
+                IF done THEN
 					LEAVE read_loop;
 				END IF;
-                DELETE FROM ExamQuestion WHERE ExamId = examIdToDelete;
-                SET deleteExxamQuestions = ROW_COUNT();
-                
-			
+				DELETE FROM ExamQuestion WHERE ExamId = examIdToDelete;
+				SET deletedExamQuestions = ROW_COUNT();
+				DELETE FROM Exam WHERE ExamId = examIdToDelete;
+				INSERT INTO DeletedRecordsCount (ExamId, DeletedExamQuestions) VALUES (examIdToDelete, deletedExamQuestions);
             END LOOP;
             CLOSE cur;
+            SELECT * FROM DeletedRecordsCount;
+			DROP TEMPORARY TABLE IF  EXISTS DeletedRecordsCount;
 		END $$
 	DELIMITER ;
 	CALL DeleteOldExams;
-    SELECT * FROM ExamQuestion;
-SELECT ExamId FROM Exam WHERE CreateDate <= DATE_FORMAT(DATE_SUB(CURDATE(),INTERVAL 3 YEAR),'%Y-%m-01');
+-- Question 11 : ユーザーが部門名を入力して部門を削除できるストアを作成し、その部門に属するアカウントはすべてデフォルトの待機部門に移されるようにする。
+	DROP PROCEDURE IF EXISTS DeleteDepartmentAndMoveAccounts;
+	DELIMITER $$
+	CREATE PROCEDURE DeleteDepartmentAndMoveAccounts(IN in_DepartmentName VARCHAR(50))
+	BEGIN
+	END $$
+	DELIMITER ;
+	CALL DeleteDepartmentAndMoveAccounts('abc');
