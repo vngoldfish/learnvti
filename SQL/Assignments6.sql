@@ -30,3 +30,25 @@ USE Testing_System_Assignment_3;
 				AND q.CreateDate < DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL 1 MONTH), '%Y-%m-01');
         END $$
  DELIMITER ;
+ 
+ -- Question 4 : 最も多くの質問がある質問タイプのIDを返すストアを作成する
+DROP PROCEDURE IF EXISTS GetMostFrequentQuestionType;
+DELIMITER $$
+	CREATE PROCEDURE GetMostFrequentQuestionType(OUT out_TypeId TINYINT)
+    BEGIN 
+		SELECT TypeId INTO out_TypeId  FROM Question
+		GROUP BY TypeId  
+		ORDER BY COUNT(TypeId) DESC
+        LIMIT 1
+        ;
+    END $$
+DELIMITER ;
+
+-- Question 5 : 質問4のストアを使用して質問タイプの名前を見つける
+SET @set_typeId = '';
+CALL GetMostFrequentQuestionType(@set_typeId);
+SELECT * FROM TypeQuestion WHERE TypeId = @set_typeId;
+-- Question 6 : ユーザーが文字列を入力し、その文字列を含む名前のグループを返すか、その文字列を含むユーザーのユーザー名を返すストアを作成してください。
+
+
+
