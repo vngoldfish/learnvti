@@ -21,5 +21,12 @@ USE Testing_System_Assignment_3;
         END$$
  DELIMITER ;
  -- Question 3 : 現在の月に作成された各質問タイプの質問数を集計するストアを作成する
- 
-SELECT * FROM Question ;
+ DROP PROCEDURE IF EXISTS GetQuestionCountByTypeForCurrentMonth;
+ DELIMITER $$
+	CREATE PROCEDURE GetQuestionCountByTypeForCurrentMonth()
+		BEGIN 
+			SELECT tq.TypeName,q.Content,q.CreateDate FROM Question q JOIN TypeQuestion tq ON q.TypeId = tq.TypeId 
+				WHERE q.CreateDate >= DATE_FORMAT(CURDATE(), '%Y-%m-01') 
+				AND q.CreateDate < DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL 1 MONTH), '%Y-%m-01');
+        END $$
+ DELIMITER ;
