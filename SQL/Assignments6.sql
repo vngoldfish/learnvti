@@ -175,7 +175,6 @@ USE Testing_System_Assignment_3;
         DECLARE default_department_id TINYINT;
         SELECT DepartmentID INTO default_department_id FROM Department WHERE DepartmentName = "待機部門";
         SELECT DepartmentID INTO department_id FROM Department WHERE DepartmentName LIKE CONCAT("%",in_DepartmentName,"%");
-		
         UPDATE Accounts
 			SET DepartmentID = default_department_id
             WHERE DepartmentID = department_id;
@@ -183,4 +182,58 @@ USE Testing_System_Assignment_3;
         
 	END $$
 	DELIMITER ;
-	CALL DeleteDepartmentAndMoveAccounts('IT');
+	-- CALL DeleteDepartmentAndMoveAccounts('IT');
+-- Question 12 : 今年、毎月に作成された質問の数を出力するストアを作成する
+	DROP PROCEDURE IF EXISTS CountQuestionsByMonth;
+	DELIMITER $$
+	CREATE PROCEDURE CountQuestionsByMonth(IN input_year INT)
+		BEGIN
+			DECLARE question_count INT;
+            DECLARE month_counter INT DEFAULT 1;
+            CREATE TEMPORARY TABLE IF NOT EXISTS TempQuesstionCount(
+				`Month` INT,
+                QuestionCount INT
+            );
+            TRUNCATE TABLE TempQuesstionCount;
+            WHILE month_counter <= 12 DO
+				SELECT COUNT(*) INTO question_count FROM Question WHERE YEAR(CreateDate) = input_year AND MONTH(CreateDate) = month_counter;
+                INSERT INTO TempQuesstionCount (`Month`, QuestionCount) VALUES (month_counter,question_count);
+                SET month_counter = month_counter + 1;
+            END WHILE;
+            SELECT * FROM TempQuesstionCount;
+            DROP TEMPORARY TABLE TempQuesstionCount;
+		END $$
+	DELIMITER ;
+    CALL CountQuestionsByMonth(2023);
+    -- Quesstion 13 : 過去6ヶ月間に作成された質問の数を毎月出力するストアを作成する（質問がない月は「その月には質問がありません」と出力する）
+		DELIMITER $$
+		DROP PROCEDURE IF EXISTS GetQuestionCountLast6Months;
+		CREATE PROCEDURE GetQuestionCountLast6Months()
+			BEGIN 
+				DECLARE question_count INT;
+                DECLARE currendate DATE;
+                DECLARE monthDate DATE;
+                DECLARE counter INT DEFAULT 0;
+				SET currendate = CURDATE();
+                CREATE TEMPORARY TABLE IF NOT EXISTS tempQuesstionCount1(
+					MonthYear VARCHAR(10),
+                    QuesstionCount INT
+                );
+                TRUNCATE TABLE tempQuesstionCount1;
+                WHILE counter < 6 DO
+					SET monthDate = DATE_SUB(currendate,INTERVAL counter MONTH);
+                    SELECT COUNT(*) INTO question_count 
+					FROM Question 
+                    WHERE DATE_FORMAT(CreateDate,'%Y-%m') = DATE_FORMAT(monthDate,'%Y-%m') ;
+                    IF question_count = 0 THEN
+						INSERT INTO tempQuesstionCount1(MonthYear,QuesstionCount) VALUES (DATE_FORMAT(monthDate,'%Y-%m'),NULL);
+                    ELSE
+						INSERT INTO tempQuesstionCount1(MonthYear,QuesstionCount) VALUES (DATE_FORMAT(monthDate,'%Y-%m'),question_count);
+                    END IF;
+                SET counter = counter + 1;
+                END WHILE;
+                SELECT * FROM TempQuesstionCount1;
+				DROP TEMPORARY TABLE TempQuesstionCount1;
+			END $$
+		DELIMITER ;
+        CALL GetQuestionCountLast6Months();
