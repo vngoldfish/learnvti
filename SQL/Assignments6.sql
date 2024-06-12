@@ -165,12 +165,22 @@ USE Testing_System_Assignment_3;
 			DROP TEMPORARY TABLE IF  EXISTS DeletedRecordsCount;
 		END $$
 	DELIMITER ;
-	CALL DeleteOldExams;
+	-- CALL DeleteOldExams;
 -- Question 11 : ユーザーが部門名を入力して部門を削除できるストアを作成し、その部門に属するアカウントはすべてデフォルトの待機部門に移されるようにする。
 	DROP PROCEDURE IF EXISTS DeleteDepartmentAndMoveAccounts;
 	DELIMITER $$
 	CREATE PROCEDURE DeleteDepartmentAndMoveAccounts(IN in_DepartmentName VARCHAR(50))
 	BEGIN
+		DECLARE department_id TINYINT DEFAULT 0;
+        DECLARE default_department_id TINYINT;
+        SELECT DepartmentID INTO default_department_id FROM Department WHERE DepartmentName = "待機部門";
+        SELECT DepartmentID INTO department_id FROM Department WHERE DepartmentName LIKE CONCAT("%",in_DepartmentName,"%");
+		
+        UPDATE Accounts
+			SET DepartmentID = default_department_id
+            WHERE DepartmentID = department_id;
+		DELETE FROM Department WHERE DepartmentID = department_id;
+        
 	END $$
 	DELIMITER ;
-	CALL DeleteDepartmentAndMoveAccounts('abc');
+	CALL DeleteDepartmentAndMoveAccounts('IT');
