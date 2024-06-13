@@ -205,7 +205,7 @@ USE Testing_System_Assignment_3;
 		END $$
 	DELIMITER ;
     CALL CountQuestionsByMonth(2023);
-    -- Quesstion 13 : 過去6ヶ月間に作成された質問の数を毎月出力するストアを作成する（質問がない月は「その月には質問がありません」と出力する）
+-- Quesstion 13 : 過去6ヶ月間に作成された質問の数を毎月出力するストアを作成する（質問がない月は「その月には質問がありません」と出力する）
 		DELIMITER $$
 		DROP PROCEDURE IF EXISTS GetQuestionCountLast6Months;
 		CREATE PROCEDURE GetQuestionCountLast6Months()
