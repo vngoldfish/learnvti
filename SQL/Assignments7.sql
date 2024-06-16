@@ -96,4 +96,127 @@ DELIMITER $$
             END IF ;
         END $$
 DELIMITER ;
+-- Question 7 : 1つの試験で、ユーザーは各質問に対して最大4つの回答を作成でき、そのうち最大2つの正解が許可されるように設定する。
+DROP TRIGGER IF EXISTS BeforeInsertAnswer;
+DELIMITER $$
+	CREATE TRIGGER BeforeInsertAnswer
+    BEFORE INSERT ON Answer
+    FOR EACH ROW
+    BEGIN
+		DECLARE answer_count TINYINT;
+        DECLARE correct_asswer_count TINYINT;
+        -- 現在の質問に対する回答の数を数える
+        SELECT COUNT(*) INTO answer_count FROM Answer WHERE QuestionId = NEW.QuestionId;
+        -- 回答の質問の数を数える
+        SELECT COUNT(*) INTO correct_asswer_count FROM Answer WHERE QuestionId = NEW.QuestionId AND isCorrect = "TRUE";
+        -- 回答の数が４を超えるかどうかを確認する
+		IF answer_count >= 4 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Cannot add more than 4 answers for a question';
+        -- 正解の数が２を超えるかどうかを確認する
+		END IF;
+        IF correct_answer_count >= 2 AND NEW.isCorrect = 'true' THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Cannot have more than 2 correct answers for a question';
+		END IF;
+    END $$
+DELIMITER ;
+-- Quesstion 8 : データを正しく修正するトリガーを作成する．ユーザーがアカウントのGENDERに「男」「女」「未定義」と入力した場合、それをデータベースの構成に合わせて「M」「F」「U」に変更する
+DROP TRIGGER IF EXISTS BeforeUpdateAccountGender;
+DELIMITER $$
+	CREATE TRIGGER  BeforeUpdateAccountGender
+    BEFORE INSERT ON Accounts 
+    FOR EACH ROW
+    BEGIN
+		IF NEW.gender = 'nam' THEN
+			SET NEW.gender = 'M';
+		ELSEIF NEW.gender = 'nữ' THEN
+			SET NEW.gender = 'F';
+		ELSEIF NEW.gender = 'chưa xác định' THEN
+			SET NEW.gender = 'U';
+		END IF;
+    END
+DELIMITER ;
+-- Quesstion 9 : 作成から二日以内の試験をユーザーが削除できないようにドリガーを作成する
+DROP TRIGGER IF EXISTS PrevenDeleteRecenExam;
+DELIMITER $$
+	CREATE TRIGGER PrevenDeleteRecenExam
+    BEFORE DELETE ON Exam
+    FOR EACH ROW
+    BEGIN
+		DECLARE currenDate DATE;
+		DECLARE createDate DATE;
+        SET currenDate = CURDATE();
+        SET createDate = OLD.CreateDate;
+        IF DATEDIFF(currenDate,createDate) <=2 THEN
+			SIGNAL SQLSTATE '45000'
+			SET MESSAGE_TEXT = 'You cannot delete an exam created within the last 2 days.';
+        END IF ;
+    END $$
+DELIMITER ;
 
+-- Question 10 : ユーザーが質問を更新または削除できるのはこの質問がまだ試験に含まれていない場合のみとするトリガーを作成する
+DROP TRIGGER IF EXISTS PrevenUpdateQuestionExam;
+DELIMITER $$
+	CREATE TRIGGER PrevenUpdateQuestionExam
+    BEFORE UPDATE ON Question
+    FOR EACH ROW
+	BEGIN
+		DECLARE QuestionCount TINYINT;
+        -- 試験に質問が含まれているかどうかを確認する
+        SELECT COUNT(*) INTO QuestionCount FROM Examquestion WHERE QuestionId = OLD.QuestionId;
+        -- 試験に質問がある場合更新を禁止する
+        IF questionCount > 0 THEN
+			SIGNAL SQLSTATE '45000'
+			SET MESSAGE_TEXT = 'You cannot update a question that is part of an exam.';
+		END IF;
+    END $$
+DELIMITER ;
+DROP TRIGGER IF EXISTS PrevenDeleteQuestionExam;
+DELIMITER $$
+	CREATE TRIGGER PrevenDeleteQuestionExam
+    BEFORE DELETE ON Question
+    FOR EACH ROW
+	BEGIN
+		DECLARE QuestionCount TINYINT;
+        -- 試験に質問が含まれているかどうかを確認する
+        SELECT COUNT(*) INTO QuestionCount FROM Examquestion WHERE QuestionId = OLD.QuestionId;
+        -- 試験で質問がある場合削除を禁止する
+        IF questionCount > 0 THEN
+			SIGNAL SQLSTATE '45000'
+			SET MESSAGE_TEXT = 'ou cannot delete a question that is part of an exam';
+		END IF;
+    END $$
+DELIMITER ;
+-- Quesstion 12 : 試験情報を習得する際に以下のようにDurationの値を変更する：Duration <= 30 は”Sort Time”　30 < Duration <= 60 は　Medium time”　Duration > 60 は "Long time"
+SELECT 
+    ExamId,
+    Title,
+    CASE
+        WHEN Duration <= 30 THEN 'Short time'
+        WHEN Duration > 30 AND Duration <= 60 THEN 'Medium time'
+        ELSE 'Long time'
+    END AS DurationCategory
+FROM Exam;
+/* Question 13 
+	各グループのアカウント数を集計し、the_number_user_amountという名前の列を追加して以下のように値を設定する：
+		グループ内のユーザー数が5以下の場合、「few」
+		グループ内のユーザー数が5より多く20以下の場合、「normal」
+		グループ内のユーザー数が20より多い場合、「higher」
+*/
+SELECT 	GroupId,
+		COUNT(GroupId) AS CountAccount,
+        CASE
+			WHEN COUNT(GroupId) <= 5 THEN 'few'
+            WHEN COUNT(GroupId) <= 20 AND COUNT(GroupId) >5 THEN 'normal'
+            WHEN COUNT(GroupId) > 20 THEN 'higher'
+         END AS  the_number_user_amount  
+FROM GroupAccount GROUP BY GroupId;
+ -- Question 14 : 名部門のユーザー数を集計し、部門にユーザーがいない場合値が代わりにユーザーはいませんと表示します
+ SELECT * FROM Department;
+ -- INSERT INTO Department(DepartmentName) VALUES ("Demo");
+SELECT d.DepartmentName,d.DepartmentId,CASE
+			WHEN COUNT(a.AccountId) = 0 THEN 'ユーザーがいない'
+            ELSE COUNT(a.AccountId)
+		END AS UserCount
+ FROM Accounts a  RIGHT JOIN Department d ON a.DepartmentId = d.DepartmentId GROUP BY d.DepartmentId,d.DepartmentName;
