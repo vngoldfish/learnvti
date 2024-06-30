@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a8564529-79a3-46a6-aa6e-ad10c1dafe51" name="Changes" comment="" />
+    <list default="true" id="a8564529-79a3-46a6-aa6e-ad10c1dafe51" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../assignment1/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../assignment1/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assignment1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../assignment1/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -37,22 +40,55 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/hirojr/Desktop/LEARNVTI/JAVA/assignment2&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
   }
 }</component>
-  <component name="RunManager">
-    <configuration name="Program" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Program" />
-      <module name="assignment1" />
+  <component name="RunManager" selected="Application.Exercise5">
+    <configuration name="Exercies1" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Exercies1" />
+      <module name="assignment2" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Exercies3" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Exercies3" />
+      <module name="assignment2" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Exercise2" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Exercise2" />
+      <module name="assignment2" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Exercise4" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Exercise4" />
+      <module name="assignment2" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Exercise5" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Exercise5" />
+      <module name="assignment2" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Program" />
+        <item itemvalue="Application.Exercise5" />
+        <item itemvalue="Application.Exercise4" />
+        <item itemvalue="Application.Exercies3" />
+        <item itemvalue="Application.Exercise2" />
+        <item itemvalue="Application.Exercies1" />
       </list>
     </recent_temporary>
   </component>
@@ -67,7 +103,10 @@
       <workItem from="1718914643194" duration="4183000" />
       <workItem from="1719345938044" duration="330000" />
       <workItem from="1719346277612" duration="2000" />
-      <workItem from="1719348168216" duration="83000" />
+      <workItem from="1719348253016" duration="2718000" />
+      <workItem from="1719603077229" duration="16950000" />
+      <workItem from="1719665418154" duration="2384000" />
+      <workItem from="1719770695962" duration="8705000" />
     </task>
     <servers />
   </component>
