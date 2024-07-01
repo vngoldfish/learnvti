@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a8564529-79a3-46a6-aa6e-ad10c1dafe51" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../assignment1/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../assignment1/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../assignment1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../assignment1/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="a8564529-79a3-46a6-aa6e-ad10c1dafe51" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -46,14 +43,7 @@
     &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
   }
 }</component>
-  <component name="RunManager" selected="Application.Exercise5">
-    <configuration name="Exercies1" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Exercies1" />
-      <module name="assignment2" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="Application.Exercise6">
     <configuration name="Exercies3" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Exercies3" />
       <module name="assignment2" />
@@ -82,13 +72,20 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Exercise6" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Exercise6" />
+      <module name="assignment2" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Exercise6" />
         <item itemvalue="Application.Exercise5" />
         <item itemvalue="Application.Exercise4" />
         <item itemvalue="Application.Exercies3" />
         <item itemvalue="Application.Exercise2" />
-        <item itemvalue="Application.Exercies1" />
       </list>
     </recent_temporary>
   </component>
@@ -107,6 +104,7 @@
       <workItem from="1719603077229" duration="16950000" />
       <workItem from="1719665418154" duration="2384000" />
       <workItem from="1719770695962" duration="8705000" />
+      <workItem from="1719864643323" duration="5232000" />
     </task>
     <servers />
   </component>
