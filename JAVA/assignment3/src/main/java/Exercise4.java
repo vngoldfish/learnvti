@@ -152,5 +152,31 @@ public class Exercise4 {
     }
     private static void question11(){
         //文字列中に文字 'a' が出現する回数を数える
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("文字を入力してください");
+        String s = scanner.nextLine();
+
+        int count = 0 ;
+        for (int i = 0 ; i < s.length();i++){
+            if('a' == s.charAt(i)){
+                count++;
+            }
+        }
+        scanner.close();
+        System.out.println(count);
+
     }
+    private  static void question12(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("文字を入力してください");
+        String str = scanner.nextLine();
+        String reverseStr = "";
+        for (int i = str.length()-1 ; i >=0 ; i--){
+            reverseStr += str.charAt(i);
+        }
+        System.out.println("逆順の文字列 : " + reverseStr);
+        scanner.close();
+
+    }
+
 }
