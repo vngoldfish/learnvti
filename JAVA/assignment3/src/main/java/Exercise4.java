@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class Exercise4 {
     public static void main(String[] args) {
-        question10();
+        question14();
     }
     private  static void question1(){
         Scanner scanner = new Scanner(System.in);
@@ -176,6 +176,52 @@ public class Exercise4 {
         }
         System.out.println("逆順の文字列 : " + reverseStr);
         scanner.close();
+
+    }
+    private  static void question13(){
+        /* 文字列に数字が含まれているかどうかをチェックし、含まれていれば false を返し、そうでなければ true を返します。
+            例:
+            "abc" => true
+            "1abc", "abc1", "123", "a1bc", null => false
+         */
+        Scanner scanner = new Scanner(System.in);
+        String str;
+        System.out.println("文字 1を入力してください");
+        str = scanner.nextLine();
+        scanner.close();
+        for(int i = 0 ; i < str.length();i++){
+            if(checkKeyNumber(str.charAt(i))){
+                System.out.println("False");
+                return;
+            }
+        }
+    }
+    private  static boolean checkKeyNumber(char ch){
+        if(ch>='0' && ch<='9'){
+
+            return true;
+        };
+        return false;
+    }
+    private static void question14(){
+        /*文字列 str が与えられた場合、指定された文字を別の指定された文字に変換します。
+        例:
+        "VTI Academy" の文字 'e' を '' に変換すると、結果は "VTI Acadmy" になります。*/
+        Scanner scanner = new Scanner(System.in);
+        String str,ch1,ch2;
+        System.out.println("文字 1を入力してください");
+        str = scanner.nextLine();
+        System.out.println("変換したい文字を入力してください。");
+        ch1 = scanner.nextLine();
+        System.out.println("変換後の文字を入力してください");
+        ch2 = scanner.nextLine();
+        scanner.close();
+        if(ch1.length() != 1 || ch2.length() != 1){
+            System.out.println("変換したい文字と変換後の文字は一文字である必要があります。");
+            return;
+        }
+        str = str.replace(ch1.charAt(0),ch2.charAt(0));
+        System.out.println("変換後の文字列: " + str);
 
     }
 
