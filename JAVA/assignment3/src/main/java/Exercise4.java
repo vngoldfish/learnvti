@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class Exercise4 {
     public static void main(String[] args) {
-        question14();
+        question16();
     }
     private  static void question1(){
         Scanner scanner = new Scanner(System.in);
@@ -224,5 +224,49 @@ public class Exercise4 {
         System.out.println("変換後の文字列: " + str);
 
     }
+    private static void question15(){
+        /*
+        * Revert string by word
+            単語ごとに文字列を反転させる
+            ライブラリを使わずに、スペースで区切られた文字列を反転させます。
+            例: "I am developer" => "developer am I"
+            内部の文字は1つのスペースでのみ区切られています。
+            ヒント: 先頭と末尾のスペースを取り除き、スペースで文字列を分割する操作を行います。
+         * */
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("文字 1を入力してください");
+        String str = scanner.nextLine();
+        scanner.close();
+        //先頭と末尾の空白を削除する
+        str = str.trim();
+        //連続するすべての空白を置き換える
+        str = str.replace("\\s+"," ");
+        //空白文字を区切り文字として、文字列 str をサブストリングの配列に分割する
+        String[] words = str.split(" ");
+        String result = "";
+        for (int i = words.length -1 ; i >=0 ; i--){
+            result = result  + words[i] + " ";
+        }
+        System.out.println(result);
 
+
+    }
+    private static  void question16(){
+        Scanner scanner = new Scanner(System.in);
+        String str ;
+        int n;
+        System.out.println("文字:");
+        str = scanner.nextLine();
+        System.out.println("nを入力：");
+        n = scanner.nextInt();
+        scanner.close();
+        if(str == null || str.isEmpty() || str.length() % n != 0){
+            System.out.println("KO");
+            return;
+        }
+        for(int i = 0 ;i < str.length();i+=n){
+            System.out.println(str.substring(i,i+n));
+        }
+
+    }
 }
